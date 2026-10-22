@@ -1,0 +1,7 @@
+# ~/apps/docker-compose.yml
+include:
+  - network/docker-compose.yml
+  - automation/docker-compose.yml
+  - general/docker-compose.yml
+  - vpn-killswitch/docker-compose.yml
+  - media/docker-compose.yml

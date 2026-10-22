@@ -1,0 +1,72 @@
+# Environment & Secrets
+.env
+*.env
+*.key
+*.pem
+
+# --- CACHES, LOGS, AND TEMPORARY DATA ---
+**/cache/
+**/.cache/
+**/logs/
+*.log
+**/tmp/
+**/temp/
+
+# --- APP RUNTIME STORAGE & SYSTEM FILES ---
+**/.aspnet/
+**/.DS_Store
+**/Thumbs.db
+
+# --- MEDIA APP DATA (Jellyfin, Plex, etc.) ---
+**/MediaCover/
+**/Backups/
+**/*.zip
+**/database.xml
+**/encoding.xml
+**/network.xml
+**/system.xml
+
+# --- ARR STACK DATA & CONFIGS (Radarr, Sonarr, Prowlarr, etc.) ---
+**/radarr/
+**/sonarr/
+**/prowlarr/
+**/qbittorrent/
+**/lidarr/
+**/readarr/
+
+# Docker databases and persistent data storage
+**/postgres/
+**/db/
+**/data/
+**/config/
+!**/config/docker-compose.yml  # (Just in case you have compose files inside config folders)
+
+# --- GENERAL APP JUNK ---
+**/cache/
+**/.cache/
+**/logs/
+*.log
+**/tmp/
+**/temp/
+**/.aspnet/
+
+# --- PI-HOLE DATA & DATABASES ---
+**/pihole/etc-pihole/
+**/pihole/gravity.db*
+**/pihole/pihole-FTL.db*
+**/pihole/config_backups/
+**/pihole/gravity_backups/
+**/pihole/listsCache/
+**/pihole/migration_backup/
+*.db
+*.db-shm
+*.db-wal
+
+# --- GLUETUN (VPN) CACHED SERVER JSONS & TEMP ---
+**/gluetun/servers/
+**/gluetun/gluetun-tmp/
+
+# --- OTHER APP RUNTIME STORAGE ---
+**/MediaCover/
+**/Backups/
+**/*.zip

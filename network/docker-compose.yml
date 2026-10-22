@@ -1,0 +1,42 @@
+services:
+
+  # --- Pi-hole: DNS sinkhole / network ad-blocker + web UI ---
+  # More info at https://github.com/pi-hole/docker-pi-hole/ and https://docs.pi-hole.net/
+  pihole:
+    container_name: pihole
+    image: pihole/pihole:latest
+    restart: unless-stopped
+    ports:
+      # DNS Ports
+      - "53:53/tcp"
+      - "53:53/udp"
+      # Default HTTP Port
+      - "80:80/tcp"
+      # Default HTTPs Port. FTL will generate a self-signed certificate
+      - "443:443/tcp"
+
+    environment:
+      # Timezone
+      TZ: ${TZ}
+      # Password for web interface
+      FTLCONF_webserver_api_password: ${PIHOLE_PASSWORD}
+      FTLCONF_dns_upstreams: '127.0.0.1#5335' # Points directly to Unbound's static IP and custom port
+      # If using Docker's default `bridge` network setting the dns listening mode should be set to 'ALL'
+      FTLCONF_dns_listeningMode: 'all'
+
+    # Volumes store your data between container upgrades
+    volumes:
+      # For persisting Pi-hole's databases and common configuration file
+      - './apps/pihole/etc-pihole:/etc/pihole'
+
+
+  # --- Unbound: recursive DNS resolver
+  unbound:
+    container_name: unbound
+    image: alpinelinux/unbound:latest
+    network_mode: "service:pihole"
+    volumes:
+      - ./apps/unbound/unbound.conf:/etc/unbound/unbound.conf:ro
+    restart: unless-stopped
+
+

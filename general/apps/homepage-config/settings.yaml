@@ -1,0 +1,38 @@
+---
+# For configuration options and examples, please see:
+# https://gethomepage.dev/configs/settings/
+
+providers:
+  openweathermap: openweathermapapikey
+  weatherapi: weatherapiapikey
+
+title: Pi5 Dashboard
+
+# Cosmetic
+#background:
+#  image: /images/jr-korpa.jpg
+#backgroundOpacity: 0.7
+#cardBlur: 2xl # xs, md, etc... see https://tailwindcss.com/docs/backdrop-blur
+
+headerStyle: boxed
+
+useEqualHeights: true
+
+
+layout:
+  Network:
+    style: column
+    rows: 2
+  Pi02 System stats:
+    style: column
+    rows: 1
+  M73 mini System Stats:
+    style: column
+    rows: 2
+
+  Storage:
+    style: row
+    columns: 5
+  Media:
+    style: row
+    columns: 4

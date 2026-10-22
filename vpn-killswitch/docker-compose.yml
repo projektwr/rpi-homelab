@@ -1,0 +1,77 @@
+networks:
+  media-net:
+    driver: bridge
+    external: true
+
+services:
+
+  # ---------------------------------------------------------------
+  #                        VPN gateway
+  # qbittorrent and prowlarr attach to its network namespace via
+  # network_mode, so they have no route out except the tunnel.
+  # ---------------------------------------------------------------
+  gluetun:
+    image: qmcgaw/gluetun:latest
+    container_name: gluetun
+    cap_add:
+      - NET_ADMIN
+    devices:
+      - /dev/net/tun:/dev/net/tun
+    environment:
+      - VPN_SERVICE_PROVIDER=${VPN_PROVIDER}
+      - VPN_TYPE=wireguard
+      - WIREGUARD_PRIVATE_KEY=${WIREGUARD_PRIVATE_KEY}
+      - WIREGUARD_ADDRESSES=${WIREGUARD_ADDRESSES}
+      - SERVER_COUNTRIES=${SERVER_COUNTRIES}
+      - FIREWALL=on
+      - FIREWALL_OUTBOUND_SUBNETS=${LAN_SUBNET}
+      - TZ=${TZ}
+      - VPN_PORT_FORWARDING=on
+      - PORT_FORWARD_ONLY=on
+
+    ports:
+      - "8080:8080"     # qBittorrent WebUI
+      - "9696:9696"     # Prowlarr (also behind the VPN)
+    volumes:
+      - ./apps/gluetun:/gluetun
+      - ./apps/gluetun/gluetun-tmp:/tmp/gluetun
+    restart: unless-stopped
+    networks:
+      - media-net
+
+  # ---------------------------------------------------------------
+  # Torrent client - no network of its own, rides on gluetun's.
+  # ---------------------------------------------------------------
+  qbittorrent:
+    image: lscr.io/linuxserver/qbittorrent:latest
+    container_name: qbittorrent
+    network_mode: "service:gluetun"
+    depends_on:
+      - gluetun
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+      - WEBUI_PORT=8080
+    volumes:
+      - ./apps/qbittorrent:/config
+      - /mnt/storage:/storage
+    restart: unless-stopped
+
+  # ---------------------------------------------------------------
+  #             Indexer manager - also behind the VPN
+  # ---------------------------------------------------------------
+  prowlarr:
+    image: lscr.io/linuxserver/prowlarr:latest
+    container_name: prowlarr
+    network_mode: "service:gluetun"
+    depends_on:
+      - gluetun
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+    volumes:
+      - ./apps/prowlarr:/config
+    restart: unless-stopped
+

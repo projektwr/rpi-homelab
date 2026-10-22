@@ -1,0 +1,163 @@
+---
+# For configuration options and examples, please see:
+# https://gethomepage.dev/configs/services/
+
+- Network:
+    - Pi-Hole (Pi5):
+        description: Primary DNS server
+        href: https://192.168.68.107/admin
+        icon: pi-hole.png
+        widgets:
+          - type: pihole
+            version: 6
+            url: http://192.168.68.107:80
+            key: GwLeKv+sJ8GbdxBKu5lQkRDGA4SSEtsCh5lw503LTgs=
+
+    - Pi-Hole (Pi02):
+        description: Backup DNS server
+        href: https://192.168.68.112/admin
+        icon: pi-hole.png
+        widgets:
+          - type: pihole
+            version: 6
+            url: http://192.168.68.112:80
+            key: B1uZyRvNcU+C0a0VPUWgQxJA7AL141tkGjNTpmpLB+g=
+
+- Media:
+    - Navidrome:
+        href: http://192.168.68.107:4533
+        icon: navidrome.webp
+        description: Music streaming
+        widget:
+            type: navidrome
+            url: http://192.168.68.107:4533
+            user: ektoras
+            token: d17e57abf5b08164df8ea777c6d9f7e8
+            salt: giannhspethanis
+
+    - Yubal:
+        href: http://192.168.68.107:8000
+        description: Youtube Music Downloader
+        icon: /icons/favicon.svg
+
+    - Immich:
+        href: http://192.168.68.107:2283
+        description: Media Backup
+        icon: immich.png
+        widget:
+          type: immich
+          url: http://192.168.68.107:2283
+          key: OsvV1vHH9MsZx5nM9tjxzQexodg2t7lxf9sTsYcO2WU
+          version: 2
+
+    - Prowlarr:
+        href: http://192.168.68.107:9696
+        icon: prowlarr.png
+        widget:
+          type: prowlarr
+          url: http://192.168.68.107:9696
+          key: 334a04851a28422ca2d855ecfb344ce9
+
+    - Radarr:
+        href: http://192.168.68.107:7878
+        icon: radarr.png
+        widget:
+          type: radarr
+          url: http://192.168.68.107:7878
+          key: 29a345b799d54c598eb338087ff477d7
+          #enableQueue: true # optional, defaults to false
+
+    - Sonarr:
+        href: http://192.168.68.107:8989
+        icon: sonarr.png
+        widget:
+          type: sonarr
+          url: http://192.168.68.107:8989
+          key: 03d0967871db418e81c8009fa0f045f1
+          #enableQueue: true # optional, defaults to false
+
+    - Jellyfin:
+        href: http://192.168.68.107:8096
+        icon: jellyfin.png
+        widget:
+          type: jellyfin
+          url: http://192.168.68.107:8096
+          key: 9e05d8c6f2a7469fa00f9981a8bb9a93
+          version: 2 # optional, default is 1
+          enableBlocks: true # optional, defaults to false
+          enableNowPlaying: true # optional, defaults to true
+          enableUser: true # optional, defaults to false
+          enableMediaControl: false # optional, defaults to true
+          showEpisodeNumber: true # optional, defaults to false
+          expandOneStreamToTwoRows: false # optional, defaults to true
+
+    - qBittorrent:
+        href: http://192.168.68.107:8080
+        icon: qbittorrent.png
+        widget:
+          type: qbittorrent
+          url: http://192.168.68.107:8080
+          username: ektoras
+          password: h3ct0ri0n091115
+          #enableLeechProgress: true # optional, defaults to false
+          enableLeechSize: true # optional, defaults to false
+
+
+
+- Storage:
+    - QNAP NAS:
+        href: http://192.168.68.109
+        icon: qnap.png
+        description: QNAP
+
+    - Zyxel NAS:
+        href: http://192.168.68.115
+        icon: /icons/zyxel-seeklogo.png
+        description: Zyxel
+
+
+
+- Pi02 System stats:
+  - Info:
+      widget:
+        type: glances
+        url: http://192.168.68.112:61208
+        username: glances # optional if auth enabled in Glances
+        password: h3ct0ri0n091115 # optional if auth enabled in Glances
+        version: 4 # required only if running glances v4 or higher, defaults to 3
+        metric: info
+        refreshInterval: 5000
+        pointsLimit: 15 # optional, defaults to 15
+
+
+  - SD Card Usage:
+      widget:
+        type: glances
+        url: http://192.168.68.112:61208
+        username: glances # optional if auth enabled in Glances
+        password: h3ct0ri0n091115 # optional if auth enabled in Glances
+        version: 4 # required only if running glances v4 or higher, defaults to 3
+        metric: fs:/
+        chart: false
+        refreshInterval: 5000
+        pointsLimit: 15 # optional, defaults to 15
+
+
+
+#- Home Automation:
+#  - Home Assistant:
+#      href: http://192.168.68.107:8123
+#      icon: homeassistant.png
+#      widget:
+#      type: homeassistant
+#      url: http://192.168.68.107:8123
+#      key:
+#      custom:
+#        - state: sensor.total_power
+#        - state: sensor.total_energy_today
+#          label: energy today
+#        - template: "{{ states.switch|selectattr('state','equalto','on')|list|length }}"
+#          label: switches on
+#        - state: weather.forecast_home
+#          label: wind speed
+#          value: "{attributes.wind_speed} {attributes.wind_speed_unit}"

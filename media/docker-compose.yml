@@ -1,0 +1,62 @@
+networks:
+  media-net:
+    external: true
+
+services:
+
+  # ---------------------------------------------------------------
+  # Sonarr/Radarr - normal networking, reach qbittorrent/prowlarr
+  # via gluetun's container name + published port.
+  # ---------------------------------------------------------------
+  sonarr:
+    image: lscr.io/linuxserver/sonarr:latest
+    container_name: sonarr
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+    volumes:
+      - ./apps/sonarr:/config
+      - /mnt/storage:/storage
+    ports:
+      - "8989:8989"
+    restart: unless-stopped
+    networks:
+      - media-net
+
+  radarr:
+    image: lscr.io/linuxserver/radarr:latest
+    container_name: radarr
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+    volumes:
+      - ./apps/radarr:/config
+      - /mnt/storage:/storage
+    ports:
+      - "7878:7878"
+    restart: unless-stopped
+    networks:
+      - media-net
+
+  # ---------------------------------------------------------------
+  # Jellyfin - Media Streaming Platform
+  # ---------------------------------------------------------------
+  jellyfin:
+    image: lscr.io/linuxserver/jellyfin:latest
+    container_name: jellyfin
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+    volumes:
+      - ./apps/jellyfin:/config
+      - /mnt/storage/media/tv:/data/tvshows
+      - /mnt/storage/media/movies:/data/movies
+    ports:
+      - "8096:8096"
+    restart: unless-stopped
+    networks:
+      - media-net
+

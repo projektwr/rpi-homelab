@@ -1,0 +1,39 @@
+---
+# For configuration options and examples, please see:
+# https://gethomepage.dev/configs/info-widgets/
+
+- resources:
+    label: System
+    cpu: true
+    cputemp: true
+    memory: true
+    disk:
+      - /
+
+
+- resources:
+    label: SD card
+    disk: /mnt/sdcard
+
+- resources:
+    label: External HDD
+    disk: /mnt/immich-media
+
+- resources:
+    label: Verbatim SSD
+    disk: /mnt/usbSSD
+
+- search:
+    provider: duckduckgo
+    target: _blank
+
+
+- openmeteo:
+    label: Korinthos # optional
+    latitude: 37.93716
+    longitude: 22.92134
+    timezone: Europe/Athens # optional
+    units: metric # or imperial
+    cache: 5 # Time in minutes to cache API responses, to stay within limits
+    format: # optional, Intl.NumberFormat options
+      maximumFractionDigits: 1
