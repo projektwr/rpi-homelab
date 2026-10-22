@@ -7,7 +7,7 @@ A lightweight, containerized homelab running on **Raspberry Pi 5** (services). D
 ## 🛠️ Hardware & Architecture
 
 * **Primary Node (Raspberry Pi 5 - 8GB RAM):**
-  * **OS:** Raspberry Pi OS (Headless)
+  * **OS:** Raspberry Pi OS (Headless, Debian based)
   * **Storage:** NVMe HAT + 2x External HDDs/SSDs for media storage
   * **Role:** Runs Docker containerized services managed via a root orchestrator and acts as the primary DNS server using Pi-Hole DNS sinkhole and Unbound DNS server.
 ---
